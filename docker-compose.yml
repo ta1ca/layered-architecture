@@ -1,0 +1,28 @@
+version: '3.2'
+
+services:
+  api:
+    container_name: ${APP_CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+    tty: true
+    depends_on:
+      - db
+    ports:
+      - ${APP_PORT}:8080
+
+  db:
+    image: 'mysql:8.0'
+    ports:
+      - '33065:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: godb
+      MYSQL_USER: gouser
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - './tmp/mysql:/var/lib/mysql'
